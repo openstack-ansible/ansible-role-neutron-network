@@ -15,8 +15,19 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
   config.vm.box = "ubuntu/trusty64"
   config.vm.synced_folder local_cache(config.vm.box), "/var/cache/apt/archives/"
-  config.vm.provider "virtualbox" do |v|
-    v.memory = 2048
+
+  config.vm.define "network" do |machine|
+    machine.vm.network :private_network, ip: "10.1.0.4",
+                       :netmask => "255.255.0.0"
+    machine.vm.network :private_network, ip: "10.3.0.4",
+                       :netmask => "255.255.0.0"
+    machine.vm.network :private_network, ip: "10.4.0.4",
+                       :netmask => "255.255.0.0"
+    machine.vm.hostname = "network"
+    machine.vm.provider :virtualbox do |v|
+      v.customize ["modifyvm", :id, "--memory", 1280]
+      v.customize ["modifyvm", :id, "--nicpromisc4", "allow-vms"]
+    end
   end
 
   config.vm.provision "ansible" do |ansible|
@@ -32,9 +43,11 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
   config.vm.provision "ansible" do |ansible|
     ansible.playbook = "deploy.yml"
-    #ansible.extra_vars = {
-    #  neutron_network_dockerized_deployment: true
-    #}
+    ansible.extra_vars = {
+      neutron_network_external_device: eth3,
+      neutron_network_external_ip: 10.4.0.4,
+      neutron_network_external_network: 10.4.0.0/16
+    }
   end
 
   config.vm.provision "ansible" do |ansible|

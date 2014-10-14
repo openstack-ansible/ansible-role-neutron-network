@@ -1,4 +1,5 @@
 ---
+# FIXME: what is local_ip used for?
 - name: probe keystone for service tenant id
   keystone_user:
     endpoint: "{{ neutron_identity_admin_url }}"
@@ -137,7 +138,8 @@
     - { section: ml2, option: tenant_network_types, value: gre }
     - { section: ml2, option: mechanism_drivers, value: openvswitch }
     - { section: ml2_type_gre, option: tunnel_id_ranges, value: "1:1000" }
-    - { section: ovs, option: local_ip, value: "127.0.0.1" }
+    - { section: ovs, option: local_ip, 
+        value: "{{ neutron_network_external_device }}" }
     - { section: ovs, option: tunnel_type, value: gre }
     - { section: ovs, option: enable_tunneling, value: true }
     - { section: securitygroup, option: firewall_driver, 

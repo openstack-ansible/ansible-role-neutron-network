@@ -1,6 +1,6 @@
 #!/bin/sh
-ip addr del {{ neutron_external_network }} dev {{ neutron_network_netdev }}
-ip link set {{ neutron_network_netdev }} up
-ip link set {{ neutron_network_netdev }} promisc on
-ip addr add {{ neutron_external_network }} dev br-ex
+ip addr del {{ neutron_network_external_network }} dev {{ neutron_network_external_device }}
+ip link set {{ neutron_network_external_device }} up
+ip link set {{ neutron_network_external_device }} promisc on
+ip addr add {{ neutron_network_external_network }} dev br-ex
 ip link set br-ex up

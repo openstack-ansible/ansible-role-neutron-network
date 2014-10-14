@@ -38,7 +38,9 @@ neutron_network_admin_url: http://{{ neutron_network_host }}:9696
 neutron_network_internal_url: http://{{ neutron_network_host }}:9696
 neutron_network_public_url: http://{{ neutron_network_host }}:9696
 
-neutron_network_interface: eth0
+neutron_network_external_device: eth0
+neutron_network_external_ip: 127.0.0.1
+neutron_network_external_network: 127.0.0.0/8
 
 neutron_identity_region: RegionOne
 
