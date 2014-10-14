@@ -37,7 +37,7 @@
     - { section: keystone_authtoken, option: auth_uri, 
         value: "{{ neutron_identity_internal_url }}" }
     - { section: keystone_authtoken, option: auth_host, 
-        value: "{{ neutron_identity_endpoint_host }}" }
+        value: "{{ neutron_identity_host }}" }
     - { section: keystone_authtoken, option: auth_port, value: 35357 }
     - { section: keystone_authtoken, option: auth_protocol, value: http }
     - { section: keystone_authtoken, option: admin_tenant_name, 
@@ -121,7 +121,7 @@
     - { section: DEFAULT, option: admin_password, 
         value: "{{ neutron_identity_neutron_password }}" }
     - { section: DEFAULT, 
-        option: nova_metadata_ip, value: "{{ neutron_compute_endpoint_host }}" }
+        option: nova_metadata_ip, value: "{{ neutron_compute_host }}" }
     - { section: DEFAULT, option: metadata_proxy_shared_secret, 
         value: "{{ neutron_compute_metadata_secret }}" }
   register: modify_metadata_agent_ini
