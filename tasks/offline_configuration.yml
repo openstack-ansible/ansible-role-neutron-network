@@ -35,7 +35,7 @@
         value: "{{ neutron_identity_internal_url }}" }
     - { section: DEFAULT, option: core_plugin, value: ml2 }
     - { section: DEFAULT, option: service_plugins, value: router }
-    - { section: DEFAULT, option: allow_overlapping_ips: true }
+    - { section: DEFAULT, option: allow_overlapping_ips, value: true }
     - { section: database, option: connection,
         value: "mysql://neutron:{{ neutron_mysql_neutron_password }}@{{ 
                   neutron_mysql_host }}:{{ neutron_mysql_port }}/neutron" }
