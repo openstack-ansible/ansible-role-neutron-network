@@ -1,75 +1,96 @@
 ---
-# FIXME: my_ip and vncserver settings will require tinkering...
-- name: ensure nova.conf is properly configured
+- name: ensure neutron.conf is properly configured
   ini_file:
-    dest: /etc/nova/nova.conf
+    dest: /etc/neutron/neutron.conf
     section: "{{ item.section }}"
     option: "{{ item.option }}"
     value: "{{ item.value }}"
   with_items:
-    - { section: DEFAULT, option: verbose, value: "{{ nova_log_verbose }}" }
-    - { section: DEFAULT, option: debug, value: "{{ nova_log_debug }}" }
-    - { section: DEFAULT, option: log_dir, value: "{{ nova_log_dir }}" }
-    - { section: DEFAULT, option: rpc_backend, value: rabbit }
-    - { section: DEFAULT, option: rabbit_host, 
-        value: "{{ nova_rabbitmq_host }}" }
-    - { section: DEFAULT, option: rabbit_port, 
-        value: "{{ nova_rabbitmq_port }}" }
-    - { section: DEFAULT, option: rabbit_userid, value: nova }
+    - { section: DEFAULT, option: verbose, value: "{{ neutron_log_verbose }}" }
+    - { section: DEFAULT, option: debug, value: "{{ neutron_log_debug }}" }
+    - { section: DEFAULT, option: log_dir, value: "{{ neutron_log_dir }}" }
+    - { section: DEFAULT, 
+        option: rpc_backend, value: neutron.openstack.common.rpc.impl_kombu }
+    - { section: DEFAULT, 
+        option: rabbit_host, value: "{{ neutron_rabbitmq_host }}" }
+    - { section: DEFAULT, 
+        option: rabbit_port, value: "{{ neutron_rabbitmq_port }}" }
+    - { section: DEFAULT, option: rabbit_userid, value: neutron }
     - { section: DEFAULT, option: rabbit_password, 
-        value: "{{ nova_rabbitmq_nova_password }}" }
-    - { section: DEFAULT, option: rabbit_virtual_host, value: /nova }
-    - { section: DEFAULT, option: my_ip, 
-        value: "127.0.0.1" }
-    - { section: DEFAULT, option: vncserver_listen, 
-        value: "0.0.0.0" }
-    - { section: DEFAULT, option: vncserver_proxyclient_address, 
-        value: "127.0.0.1" }
+        value: "{{ neutron_rabbitmq_neutron_password }}" }
+    - { section: DEFAULT, option: rabbit_virtual_host, value: /neutron }
     - { section: DEFAULT, option: auth_strategy, value: keystone }
+    - { section: DEFAULT, 
+        option: notify_nova_on_port_status_changes, value: true }
+    - { section: DEFAULT, 
+        option: notify_nova_on_port_data_changes, value: true }
+    - { section: DEFAULT, 
+        option: nova_url, value: "{{ neutron_compute_internal_url }}" }
+    - { section: DEFAULT, option: nova_admin_tenant_id, 
+        value: "{{ neutron_identity_service_tenant_id }}" }
+    - { section: DEFAULT, option: nova_admin_username, value: nova }
+    - { section: DEFAULT, option: nova_admin_password, 
+        value: "{{ neutron_identity_nova_password }}" }
+    - { section: DEFAULT, option: nova_admin_auth_url,
+        value: "{{ neutron_identity_internal_url }}" }
+    - { section: DEFAULT, option: core_plugin, value: ml2 }
+    - { section: DEFAULT, option: service_plugins, value: router }
+    - { section: DEFAULT, option: allow_overlapping_ips: true }
     - { section: database, option: connection,
-        value: "mysql://nova:{{ nova_mysql_nova_password }}@{{ 
-                  nova_mysql_host }}:{{ nova_mysql_port }}/nova" }
+        value: "mysql://neutron:{{ neutron_mysql_neutron_password }}@{{ 
+                  neutron_mysql_host }}:{{ neutron_mysql_port }}/neutron" }
     - { section: keystone_authtoken, option: auth_uri, 
-        value: "{{ nova_identity_internal_url }}" }
+        value: "{{ neutron_identity_internal_url }}" }
     - { section: keystone_authtoken, option: auth_host, 
-        value: "{{ nova_identity_endpoint_host }}" }
+        value: "{{ neutron_identity_endpoint_host }}" }
     - { section: keystone_authtoken, option: auth_port, value: 35357 }
     - { section: keystone_authtoken, option: auth_protocol, value: http }
     - { section: keystone_authtoken, option: admin_tenant_name, 
         value: service }
-    - { section: keystone_authtoken, option: admin_user, value: nova }
+    - { section: keystone_authtoken, option: admin_user, value: neutron }
     - { section: keystone_authtoken, option: admin_password, 
-        value: "{{ nova_identity_nova_password }}" }
-  register: modify_nova_ini
+        value: "{{ neutron_identity_neutron_password }}" }
+  register: modify_neutron_ini
 
-- name: ensure nova sqlite is deleted
+- name: ensure ml2_conf.ini is properly configured
+  ini_file:
+    dest: /etc/neutron/plugins/ml2/ml2_conf.ini
+    section: "{{ item.section }}"
+    option: "{{ item.option }}"
+    value: "{{ item.value }}"
+  with_items:
+    - { section: ml2, option: type_drivers, value: gre }
+    - { section: ml2, option: tenant_network_types, value: gre }
+    - { section: ml2, option: mechanism_drivers, value: openvswitch }
+    - { section: ml2_type_gre, option: tunnel_id_ranges, value: "1:1000" }
+    - { section: securitygroup, option: firewall_driver, 
+        value: neutron.agent.linux.iptables_firewall.OVSHybridIptablesFirewallDriver }
+    - { section: securitygroup, option: enable_security_group, value: true }
+  register: modify_ml2_ini
+
+- name: ensure neutron sqlite is deleted
   file:
-    dest: /var/lib/nova/nova.sqlite
+    dest: /var/lib/neutron/neutron.sqlite
     state: absent
 
-- name: ensure nova database has been populated with required tables
-  sudo_user: nova
-  command: /usr/bin/nova-manage db sync
-  when: nova_controller_dockerize_context is defined or
-        create_nova_db|changed
+- name: ensure neutron database has been populated with required tables
+  sudo_user: neutron
+  command: /usr/bin/neutron-manage db sync
+  when: neutron_controller_dockerize_context is defined or
+        create_neutron_db|changed
   failed_when: false
 
 - name: remove old log files
-  shell: rm /var/log/nova/*
-  when: nova_controller_dockerize_context is defined or
-        modify_nova_ini|changed
+  shell: rm /var/log/neutron/*
+  when: neutron_controller_dockerize_context is defined or
+        modify_neutron_ini|changed or modify_ml2_ini|changed
 
-- name: restart nova controller if necessary
+- name: restart neutron controller if necessary
   service:
     name: "{{ item }}"
     state: restarted
   with_items:
-    - nova-api
-    - nova-cert
-    - nova-consoleauth
-    - nova-scheduler
-    - nova-conductor
-    - nova-novncproxy
-  when: modify_nova_ini|changed and
-        nova_controller_dockerize_context is not defined
+    - neutron-server
+  when: (modify_neutron_ini|changed or modify_ml2_ini|changed) and
+        neutron_controller_dockerize_context is not defined
 

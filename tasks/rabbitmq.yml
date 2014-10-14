@@ -1,0 +1,16 @@
+---
+- name: ensure neutron rabbitmq vhost is present
+  rabbitmq_vhost:
+    name: /neutron
+    state: present
+
+- name: ensure neutron rabbitmq user is present
+  rabbitmq_user:
+    user: neutron
+    password: "{{ neutron_rabbitmq_neutron_password }}"
+    vhost: /neutron
+    configure_priv: .*
+    read_priv: .*
+    write_priv: .*
+    state: present
+    force: yes

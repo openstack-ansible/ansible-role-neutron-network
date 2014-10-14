@@ -1,0 +1,30 @@
+---
+- name: create neutron user in keystone
+  keystone_user:
+    endpoint: "{{ neutron_identity_admin_url }}"
+    token: "{{ neutron_identity_admin_token }}"
+    tenant: service
+    user: neutron
+    password: "{{ neutron_identity_neutron_password }}"
+
+- name: add neutron user to the service tenant with the admin role
+  keystone_user:
+    endpoint: "{{ neutron_identity_admin_url }}"
+    token: "{{ neutron_identity_admin_token }}"
+    tenant: service
+    user: neutron
+    role: admin
+
+- name: add neutron endpoint
+  keystone_service:
+    endpoint: "{{ neutron_identity_admin_url }}"
+    token: "{{ neutron_identity_admin_token }}"
+    region: "{{ neutron_identity_region }}"
+    name: neutron
+    type: network
+    description: "Network Service"
+    public_url: "{{ neutron_compute_public_url }}"
+    internal_url: "{{ neutron_compute_internal_url }}"
+    admin_url: "{{ neutron_compute_admin_url }}"
+
+
