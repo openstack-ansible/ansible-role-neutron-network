@@ -47,13 +47,13 @@
     password: "{{ nova_identity_nova_password }}"
 
 - include: docker.yml
-  when: nova_dockerized_deployment
+  when: nova_controller_dockerized_deployment
 
 - include: install.yml
-  when: not nova_dockerized_deployment 
+  when: not nova_controller_dockerized_deployment 
 
 - include: offline_configuration.yml
-  when: not nova_dockerized_deployment 
+  when: not nova_controller_dockerized_deployment 
 
 - name: wait until nova service is ready
   wait_for:

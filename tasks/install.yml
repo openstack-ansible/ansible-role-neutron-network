@@ -69,4 +69,4 @@
     - nova-scheduler
     - nova-conductor
     - nova-novncproxy
-  when: nova_dockerize_context is defined
+  when: nova_controller_dockerize_context is defined

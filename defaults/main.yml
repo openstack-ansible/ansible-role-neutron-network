@@ -55,7 +55,7 @@ nova_identity_region: RegionOne
 nova_identity_demo_password: password
 
 # The variables below only apply to dockerized deployment
-nova_dockerized_deployment: false
-nova_docker_username: default
-nova_docker_imagename: nova-controller
-nova_docker_containername: nova-controller
+nova_controller_dockerized_deployment: false
+nova_controller_docker_username: default
+nova_controller_docker_imagename: nova-controller
+nova_controller_docker_containername: nova-controller
