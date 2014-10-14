@@ -64,7 +64,7 @@
     - neutron-plugin-openvswitch-agent
     - neutron-l3-agent
     - neutron-dhcp-agent
-    - neturon-metadata-agent
+    - neutron-metadata-agent
     - openvswitch-switch
 
 - name: ensure that openvswitch integration bridge exists
