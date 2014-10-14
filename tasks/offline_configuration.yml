@@ -1,6 +1,6 @@
 ---
 # FIXME: my_ip and vncserver settings will require tinkering...
-- name: ensure nova is properly configured
+- name: ensure nova.conf is properly configured
   ini_file:
     dest: /etc/nova/nova.conf
     section: "{{ item.section }}"
@@ -59,7 +59,7 @@
   when: nova_controller_dockerize_context is defined or
         modify_nova_ini|changed
 
-- name: restart nova
+- name: restart nova controller if necessary
   service:
     name: "{{ item }}"
     state: restarted

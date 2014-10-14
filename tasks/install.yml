@@ -1,5 +1,5 @@
 ---
-- name: ensure nova packages and dependencies are installed
+- name: ensure nova controller packages and dependencies are installed
   apt: 
     pkg: "{{ item }}"
     state: latest 
@@ -43,8 +43,7 @@
     group: root
     mode: 0644
 
-
-- name: ensure nova is started and enabled
+- name: ensure nova controller is started and enabled
   service: 
     name: "{{ item }}"
     state: started 
@@ -57,7 +56,7 @@
     - nova-conductor
     - nova-novncproxy
 
-- name: ensure nova is properly shut down for dockerized deployments
+- name: ensure nova controller is properly shut down for dockerized deployments
   service:
     name: "{{ item }}"
     state: stopped
