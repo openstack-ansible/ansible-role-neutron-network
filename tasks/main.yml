@@ -4,12 +4,12 @@
 - include: rabbitmq.yml
 
 - include: docker.yml
-  when: nova_controller_dockerized_deployment
+  when: neutron_controller_dockerized_deployment
 
 - include: install.yml
-  when: not nova_controller_dockerized_deployment 
+  when: not neutron_controller_dockerized_deployment 
 
 - include: offline_configuration.yml
-  when: not nova_controller_dockerized_deployment 
+  when: not neutron_controller_dockerized_deployment 
 
 - include: keystone.yml

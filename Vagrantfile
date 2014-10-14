@@ -27,14 +27,14 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     ansible.playbook = "prep.yml"
     #ansible.extra_vars = {
     #  mariadb_bind_address: "0.0.0.0"
-    #  nova_controller_dockerized_deployment: true
+    #  neutron_controller_dockerized_deployment: true
     #}
   end
 
   config.vm.provision "ansible" do |ansible|
     ansible.playbook = "deploy.yml"
     #ansible.extra_vars = {
-    #  nova_controller_dockerized_deployment: true
+    #  neutron_controller_dockerized_deployment: true
     #}
   end
 
