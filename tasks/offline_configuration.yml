@@ -93,6 +93,7 @@
     owner: neutron
     group: neutron
     mode: 0600
+    create: yes
     regexp: ^dchp-option-force=
     line: dhcp-option-force=26,1454
     state: present 
@@ -166,7 +167,7 @@
     - neutron-plugin-openvswitch-agent
     - neutron-l3-agent
     - neutron-dhcp-agent
-    - neturon-metadata-agent
+    - neutron-metadata-agent
     - openvswitch-switch
   when: (modify_neutron_conf|changed or modify_l3_agent_ini|changed or 
          modify_dhcp_agent_ini|changed or modify_metadata_agent_ini|changed or 
