@@ -5,6 +5,7 @@
     token: "{{ neutron_identity_admin_token }}"
     tenant: service
   register: identity_service_tenant
+  changed_when: false
 
 - name: ensure neutron.conf is properly configured
   ini_file:
@@ -79,13 +80,6 @@
   file:
     dest: /var/lib/neutron/neutron.sqlite
     state: absent
-
-- name: ensure neutron database has been populated with required tables
-  sudo_user: neutron
-  command: /usr/bin/neutron-manage db sync
-  when: neutron_controller_dockerize_context is defined or
-        create_neutron_db|changed
-  failed_when: false
 
 - name: remove old log files
   shell: rm /var/log/neutron/*

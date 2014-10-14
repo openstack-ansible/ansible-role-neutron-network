@@ -3,6 +3,12 @@
   sudo: False
   vars:
     identity_demo_password: password
+    internal_network_name: demo-net
+    internal_network_subnet_name: demo-subnet
+    internal_network_subnet_cidr: 192.168.0.0/24
+    internal_network_subnet_dns_nameservers: 8.8.8.8
+    internal_network_subnet_gateway_ip: 192.168.0.1
+    router_name: demo-router
   tasks:
 
     - name: update admin.openrc from template
@@ -39,3 +45,50 @@
         src: templates/demo.openrc
         dest: "{{ ansible_env.PWD }}/demo.openrc"
         owner: "{{ ansible_ssh_user }}"
+
+    - name: ensure internal network is registered
+      neutron_network:
+        auth_url: "{{ neutron_identity_public_url }}"
+        login_tenant_name: demo
+        login_username: demo
+        login_password: "{{ identity_demo_password }}"
+        tenant_name: demo
+        name: "{{ internal_network_name }}"
+        state: present
+      register: internal_network
+
+    - name: ensure subnet internal network is registered
+      neutron_subnet:
+        auth_url: "{{ neutron_identity_public_url }}"
+        login_tenant_name: demo
+        login_username: demo
+        login_password: "{{ identity_demo_password }}"
+        tenant_name: demo
+        name: "{{ internal_network_subnet_name }}"
+        network_name: "{{ internal_network_name }}"
+        cidr: "{{ internal_network_subnet_cidr }}"
+        enable_dhcp: true
+        gateway_ip: "{{ internal_network_subnet_gateway_ip }}"
+        dns_nameservers: "{{ internal_network_subnet_dns_nameservers }}"
+        state: present
+
+    - name: ensure router exists
+      neutron_router:
+        auth_url: "{{ neutron_identity_public_url }}"
+        login_tenant_name: demo
+        login_username: demo
+        login_password: "{{ identity_demo_password }}"
+        tenant_name: demo
+        name: "{{ router_name }}"
+        state: present
+
+    - name: ensure router has interface connected to internal network
+      neutron_router_interface:
+        auth_url: "{{ neutron_identity_public_url }}"
+        login_tenant_name: demo
+        login_username: demo
+        login_password: "{{ identity_demo_password }}"
+        tenant_name: demo
+        router_name: "{{ router_name }}"
+        subnet_name: "{{ internal_network_subnet_name }}"
+        state: present
