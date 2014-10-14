@@ -19,6 +19,7 @@
         - mariadb
         - rabbitmq-server
         - keystone
+        - nova-controller
 
     - name: check out library needed for demo deployment from github.com
       git:

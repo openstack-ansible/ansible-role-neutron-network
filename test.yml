@@ -33,22 +33,8 @@
         user: demo
         role: _member_
 
-    - name: create ssh keypair
-      command: ssh-keygen -q -f {{ ansible_env.PWD }}/.ssh/id_rsa -P ""
-               creates={{ ansible_env.PWD }}/.ssh/id_rsa
-
-    - name: capture public key in variable
-      command: cat {{ ansible_env.PWD }}/.ssh/id_rsa.pub
-      register: pubkey
-      changed_when: false
-
-    - name: add ssh keypair to nova
-      nova_keypair:
-        auth_url: "{{ nova_identity_public_url }}"
-        login_tenant_name: demo
-        login_username: demo
-        login_password: "{{ nova_identity_demo_password }}"
-        name: default
-        public_key: "{{ pubkey.stdout }}"
-        state: present
-
+    - name: update demo.openrc from template
+      template:
+        src: templates/demo.openrc
+        dest: "{{ ansible_env.PWD }}/demo.openrc"
+        owner: "{{ ansible_ssh_user }}"
