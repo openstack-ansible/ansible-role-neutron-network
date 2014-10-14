@@ -1,15 +1,26 @@
 ---
-- name: ensure neutron controller packages and dependencies are installed
+- name: ensure sysctl is appropriately configured
+  sysctl:
+    name: "{{ item.name }}"
+    value: "{{ item.value }}"
+    state: present
+  with_items:
+    - { name: net.ipv4.ip_forward, value: 1 }
+    - { name: net.ipv4.conf.all.rp_filter, value: 0 }
+    - { name: net.ipv4.conf.default.rp_filter, value: 0 }
+
+- name: ensure neutron network packages and dependencies are installed
   apt: 
     pkg: "{{ item }}"
     state: latest 
     update_cache: yes 
     cache_valid_time: 600
   with_items:
-    - neutron-server
+    - neutron-dhcp-agent
+    - neutron-l3-agent
     - neutron-plugin-ml2
-    - python-mysqldb
-    - python-neutronclient
+    - neutron-plugin-openvswitch-agent
+    - openvswitch-datapath-dkms
 
 - name: ensure that neutron directories exist and have correct permissions
   file:
@@ -42,19 +53,46 @@
     group: root
     mode: 0644
 
-- name: ensure neutron controller is started and enabled
+- name: ensure neutron network is started and enabled
   service: 
     name: "{{ item }}"
     state: started 
     enabled: yes
   with_items:
-    - neutron-server
+    - dnsmasq
+    - neutron-plugin-openvswitch-agent
+    - neutron-l3-agent
+    - neutron-dhcp-agent
+    - neturon-metadata-agent
+    - openvswitch-switch
 
-- name: ensure neutron controller is properly shut down for dockerized deployments
+- name: ensure that openvswitch integration bridge exists
+  openvswitch_bridge:
+    bridge: br-int
+    state: present
+
+- name: ensure that openvswitch external bridge exists
+  openvswitch_bridge:
+    bridge: br-ex
+    state: present
+
+- name: ensure that port connects external bridge to physical interface
+  openvswitch_port:
+    bridge: br-ex
+    port: "{{ neutron_network_interface }}"
+    state: present
+
+- name: ensure neutron network is properly shut down for dockerized deployments
   service:
     name: "{{ item }}"
     state: stopped
     enabled: yes
   with_items:
-    - neutron-server
-  when: neutron_controller_dockerize_context is defined
+    - dnsmasq
+    - neutron-plugin-openvswitch-agent
+    - neutron-l3-agent
+    - neutron-dhcp-agent
+    - neturon-metadata-agent
+    - openvswitch-switch
+  when: neutron_network_dockerize_context is defined
+

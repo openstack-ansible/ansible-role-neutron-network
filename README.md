@@ -1,9 +1,9 @@
-marklee77.nova-controller
+marklee77.neutron-network
 =========================
 
-[![Build Status](https://travis-ci.org/marklee77/ansible-role-nova-controller.svg?branch=master)](https://travis-ci.org/marklee77/ansible-role-nova-controller)
+[![Build Status](https://travis-ci.org/marklee77/ansible-role-neutron-network.svg?branch=master)](https://travis-ci.org/marklee77/ansible-role-neutron-network)
 
-The purpose of this role is to deploy nova-controller onto Ubuntu. There is
+The purpose of this role is to deploy neutron-network onto Ubuntu. There is
 also support for an experimental "dockerized" deployment. This dockerized
 deployment copies the role to the target machine and uses the original
 ansible-based functionality to build a docker image, and then uses recent
@@ -19,10 +19,10 @@ Role Variables
 
 The variables below only affect the dockerized deployment:
 
-- nova-controller_dockerized_deployment: false
-- nova-controller_docker_username: default
-- nova-controller_docker_imagename: nova
-- nova-controller_docker_containername: nova
+- neutron_network_dockerized_deployment: false
+- neutron_network_docker_username: default
+- neutron_network_docker_imagename: neutron-network
+- neutron_network_docker_containername: nova
 
 Example Playbook
 -------------------------
@@ -30,7 +30,7 @@ Example Playbook
     - hosts: all
       sudo: True
       roles:
-        - marklee77.nova-controller
+        - marklee77.neutron-network
 
 License
 -------
@@ -52,7 +52,7 @@ Todo
 ----
 
 - metadata...
-- separate nova-api from nova-controller?
-- delegate_to in order to allow for installing on hosts different from nova-controller host...
-- consider making mapping of nova-controller port to host interface optional
+- separate nova-api from neutron-network?
+- delegate_to in order to allow for installing on hosts different from neutron-network host...
+- consider making mapping of neutron-network port to host interface optional
 - eventually, we're going to need a better way to pass in variables...

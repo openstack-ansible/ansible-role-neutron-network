@@ -1,8 +1,8 @@
 FROM ansible/ubuntu14.04-ansible:stable
 MAINTAINER Mark Stillwell <mark@stillwell.me>
 
-COPY . /var/cache/docker/neutron-controller
-WORKDIR /var/cache/docker/neutron-controller
+COPY . /var/cache/docker/neutron-network
+WORKDIR /var/cache/docker/neutron-network
 
 RUN if [ ! -f playbooks/group_vars/all.yml ]; then \
       mkdir -p playbooks/group_vars;\

@@ -20,6 +20,7 @@
         - rabbitmq-server
         - keystone
         - nova-controller
+        - neutron-controller
 
     - name: check out library needed for demo deployment from github.com
       git:
