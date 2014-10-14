@@ -26,14 +26,14 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   config.vm.provision "ansible" do |ansible|
     ansible.playbook = "prep.yml"
     #ansible.extra_vars = {
-    #  neutron_controller_dockerized_deployment: true
+    #  neutron_network_dockerized_deployment: true
     #}
   end
 
   config.vm.provision "ansible" do |ansible|
     ansible.playbook = "deploy.yml"
     #ansible.extra_vars = {
-    #  neutron_controller_dockerized_deployment: true
+    #  neutron_network_dockerized_deployment: true
     #}
   end
 

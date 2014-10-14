@@ -1,15 +1,11 @@
 ---
-- include: mysql.yml
-
 - include: rabbitmq.yml
 
 - include: docker.yml
-  when: neutron_controller_dockerized_deployment
+  when: neutron_network_dockerized_deployment
 
 - include: install.yml
-  when: not neutron_controller_dockerized_deployment 
+  when: not neutron_network_dockerized_deployment 
 
 - include: offline_configuration.yml
-  when: not neutron_controller_dockerized_deployment 
-
-- include: keystone.yml
+  when: not neutron_network_dockerized_deployment 

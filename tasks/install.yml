@@ -18,6 +18,7 @@
   with_items:
     - neutron-dhcp-agent
     - neutron-l3-agent
+    - neutron-metadata-agent
     - neutron-plugin-ml2
     - neutron-plugin-openvswitch-agent
     - openvswitch-datapath-dkms
@@ -53,13 +54,13 @@
     group: root
     mode: 0644
 
+#    - dnsmasq
 - name: ensure neutron network is started and enabled
   service: 
     name: "{{ item }}"
     state: started 
     enabled: yes
   with_items:
-    - dnsmasq
     - neutron-plugin-openvswitch-agent
     - neutron-l3-agent
     - neutron-dhcp-agent
@@ -82,13 +83,13 @@
     port: "{{ neutron_network_interface }}"
     state: present
 
+#   - dnsmasq
 - name: ensure neutron network is properly shut down for dockerized deployments
   service:
     name: "{{ item }}"
     state: stopped
     enabled: yes
   with_items:
-    - dnsmasq
     - neutron-plugin-openvswitch-agent
     - neutron-l3-agent
     - neutron-dhcp-agent
