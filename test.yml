@@ -1,7 +1,8 @@
 ---
 - hosts: all
   sudo: False
- 
+  vars:
+    identity_demo_password: password
   tasks:
 
     - name: update admin.openrc from template
@@ -12,23 +13,23 @@
 
     - name: create demo tenant
       keystone_user:
-        endpoint: "{{ nova_identity_admin_url }}"
-        token: "{{ nova_identity_admin_token }}"
+        endpoint: "{{ neutron_identity_admin_url }}"
+        token: "{{ neutron_identity_admin_token }}"
         tenant: demo
         tenant_description: "Demo Tenant"
 
     - name: create demo user
       keystone_user:
-        endpoint: "{{ nova_identity_admin_url }}"
-        token: "{{ nova_identity_admin_token }}"
+        endpoint: "{{ neutron_identity_admin_url }}"
+        token: "{{ neutron_identity_admin_token }}"
         tenant: demo
         user: demo
-        password: "{{ nova_identity_demo_password }}"
+        password: "{{ identity_demo_password }}"
 
     - name: associate _member_ role with demo user
       keystone_user:
-        endpoint: "{{ nova_identity_admin_url }}"
-        token: "{{ nova_identity_admin_token }}"
+        endpoint: "{{ neutron_identity_admin_url }}"
+        token: "{{ neutron_identity_admin_token }}"
         tenant: demo
         user: demo
         role: _member_
