@@ -1,4 +1,11 @@
 ---
+- name: probe keystone for service tenant id
+  keystone_user:
+    endpoint: "{{ neutron_identity_admin_url }}"
+    token: "{{ neutron_identity_admin_token }}"
+    tenant: service
+  register: identity_service_tenant
+
 - name: ensure neutron.conf is properly configured
   ini_file:
     dest: /etc/neutron/neutron.conf
@@ -27,7 +34,7 @@
     - { section: DEFAULT, 
         option: nova_url, value: "{{ neutron_compute_internal_url }}" }
     - { section: DEFAULT, option: nova_admin_tenant_id, 
-        value: "{{ neutron_identity_service_tenant_id }}" }
+        value: "{{ identity_service_tenant.id }}" }
     - { section: DEFAULT, option: nova_admin_username, value: nova }
     - { section: DEFAULT, option: nova_admin_password, 
         value: "{{ neutron_identity_nova_password }}" }
