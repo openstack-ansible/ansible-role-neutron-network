@@ -40,6 +40,18 @@
         user: demo
         role: _member_
 
+    # Ansible neutron modules lists all tenants to get ids, but this is not
+    # permitted for non-admin users. Need to fix neutron_* modules as non-admin
+    # *should* be able to create networks, associate floating ips, etc.
+
+    - name: ensure demo user has admin role
+      keystone_user:
+        endpoint: "{{ neutron_identity_admin_url }}"
+        token: "{{ neutron_identity_admin_token }}"
+        tenant: demo
+        user: demo
+        role: admin
+
     - name: update demo.openrc from template
       template:
         src: templates/demo.openrc
