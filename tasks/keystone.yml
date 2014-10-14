@@ -23,8 +23,8 @@
     name: neutron
     type: network
     description: "Network Service"
-    public_url: "{{ neutron_compute_public_url }}"
-    internal_url: "{{ neutron_compute_internal_url }}"
-    admin_url: "{{ neutron_compute_admin_url }}"
+    public_url: "{{ neutron_network_public_url }}"
+    internal_url: "{{ neutron_network_internal_url }}"
+    admin_url: "{{ neutron_network_admin_url }}"
 
 
