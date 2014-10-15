@@ -6,9 +6,9 @@
     login_username: admin
     login_password: "{{ neutron_identity_admin_password }}"
     name: "{{ neutron_network_external_name }}"
-    router_external: true
     provider_network_type: gre
-    provider_segmentation_id: 6
+    router_external: true
+    shared: true
     state: present
 
 - name: ensure subnet for external network is registered
@@ -26,4 +26,3 @@
     allocation_pool_start: "{{ neutron_network_external_allocation_pool_start }}"
     allocation_pool_end: "{{ neutron_network_external_allocation_pool_end }}"
     state: present
-

@@ -40,6 +40,12 @@
         user: demo
         role: _member_
 
+    - name: update demo.openrc from template
+      template:
+        src: templates/demo.openrc
+        dest: "{{ ansible_env.PWD }}/demo.openrc"
+        owner: "{{ ansible_ssh_user }}"
+
     # Ansible neutron modules lists all tenants to get ids, but this is not
     # permitted for non-admin users. Need to fix neutron_* modules as non-admin
     # *should* be able to create networks, associate floating ips, etc.
@@ -51,12 +57,6 @@
         tenant: demo
         user: demo
         role: admin
-
-    - name: update demo.openrc from template
-      template:
-        src: templates/demo.openrc
-        dest: "{{ ansible_env.PWD }}/demo.openrc"
-        owner: "{{ ansible_ssh_user }}"
 
     - name: ensure internal network is registered
       neutron_network:
