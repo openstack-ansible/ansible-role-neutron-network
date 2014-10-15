@@ -61,6 +61,9 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
   config.vm.provision "ansible" do |ansible|
     ansible.playbook = "test.yml"
+    ansible.extra_vars = {
+      neutron_network_external_router_ip: "10.1.0.100",
+    }
   end
 
 end

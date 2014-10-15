@@ -115,3 +115,7 @@
         network_name: "{{ neutron_network_external_name }}"
         state: present
 
+    - name: ping router external interface to verify connectivity
+      command: ping -c 4 {{ neutron_network_external_router_ip }}
+      changed_when: false
+
