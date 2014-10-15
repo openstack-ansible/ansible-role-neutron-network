@@ -156,6 +156,7 @@
   command: pkill dnsmasq
   when: modify_dnsmasq_neutron_conf|changed and 
         neutron_network_dockerize_context is not defined
+  ignore_errors: yes
 
 - name: restart neutron network if necessary
   service:
