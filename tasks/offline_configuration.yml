@@ -152,16 +152,10 @@
     dest: /var/lib/neutron/neutron.sqlite
     state: absent
 
-#- name: restart dnsmasq if necessary
-#  service:
-#    name: "{{ item }}"
-#    state: restarted
-#  with_items:
-#    - dnsmasq
-#  when: modify_dnsmasq_neutron_conf|changed and 
-#        neutron_network_dockerize_context is not defined
-
-- command: rm -f /var/log/neutron/*
+- name: restart dnsmasq if necessary
+  command: pkill dnsmasq
+  when: modify_dnsmasq_neutron_conf|changed and 
+        neutron_network_dockerize_context is not defined
 
 - name: restart neutron network if necessary
   service:

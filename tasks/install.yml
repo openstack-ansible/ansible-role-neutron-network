@@ -56,7 +56,6 @@
     group: root
     mode: 0644
 
-#    - dnsmasq
 - name: ensure neutron network is started and enabled
   service: 
     name: "{{ item }}"
@@ -98,7 +97,6 @@
     port: "{{ neutron_network_external_device }}"
     state: present
 
-#   - dnsmasq
 - name: ensure neutron network is properly shut down for dockerized deployments
   service:
     name: "{{ item }}"
