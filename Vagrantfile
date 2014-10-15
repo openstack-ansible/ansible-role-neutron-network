@@ -44,9 +44,13 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   config.vm.provision "ansible" do |ansible|
     ansible.playbook = "deploy.yml"
     ansible.extra_vars = {
-      neutron_network_external_device: eth3,
-      neutron_network_external_ip: 10.4.0.4,
-      neutron_network_external_network: 10.4.0.0/16
+      neutron_network_external_name: "public",
+      neutron_network_external_device: "eth3",
+      neutron_network_external_ip: "10.4.0.4",
+      neutron_network_external_network: "10.4.0.0/16",
+      neutron_network_external_allocation_pool_start: "10.4.0.100",
+      neutron_network_external_allocation_pool_end: "10.4.0.200",
+      neutron_network_external_dns_servers: "8.8.8.8"
     }
   end
 

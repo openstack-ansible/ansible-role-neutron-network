@@ -104,3 +104,14 @@
         router_name: "{{ router_name }}"
         subnet_name: "{{ internal_network_subnet_name }}"
         state: present
+
+    - name: ensure router has external network gateway
+      neutron_router_gateway:
+        auth_url: "{{ neutron_identity_public_url }}"
+        login_tenant_name: demo
+        login_username: demo
+        login_password: "{{ identity_demo_password }}"
+        router_name: "{{ router_name }}"
+        network_name: "{{ neutron_network_external_name }}"
+        state: present
+

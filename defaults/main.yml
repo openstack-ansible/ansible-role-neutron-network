@@ -10,6 +10,11 @@ neutron_identity_admin_token: >
                         '/private/credentials/keystone-admin-token 
                          length=20 
                          chars=ascii_letters,digits') }}
+neutron_identity_admin_password: >
+  {{ lookup('password', neutron_run_dir + 
+                        '/private/credentials/keystone-admin-password 
+                         length=20 
+                         chars=ascii_letters,digits') }}
 neutron_identity_neutron_password: >
   {{ lookup('password', neutron_run_dir + 
                         '/private/credentials/keystone-neutron-password 
@@ -39,8 +44,12 @@ neutron_network_internal_url: http://{{ neutron_network_host }}:9696
 neutron_network_public_url: http://{{ neutron_network_host }}:9696
 
 neutron_network_external_device: eth0
-neutron_network_external_ip: 127.0.0.1
-neutron_network_external_network: 127.0.0.0/8
+neutron_network_external_ip: 192.168.0.1
+neutron_network_external_network: 192.168.0.0/24
+neutron_network_external_name: public
+neutron_network_external_dns_servers: 8.8.8.8
+neutron_network_external_allocation_pool_start: 192.168.0.100
+neutron_network_external_allocation_pool_end: 192.168.0.200
 
 neutron_identity_region: RegionOne
 
