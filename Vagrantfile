@@ -22,7 +22,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     machine.vm.hostname = "network"
     machine.vm.provider :virtualbox do |v|
       v.customize ["modifyvm", :id, "--memory", 1280]
-      v.customize ["modifyvm", :id, "--nicpromisc4", "allow-vms"]
+      v.customize ["modifyvm", :id, "--nicpromisc2", "allow-vms"]
     end
   end
 
@@ -32,24 +32,24 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
   config.vm.provision "ansible" do |ansible|
     ansible.playbook = "prep.yml"
-    ansible.extra_vars = {
-      keystone_identity_host: "{{ ansible_docker0['ipv4']['address'] }}"
-      nova_identity_host: "{{ ansible_docker0['ipv4']['address'] }}"
-      nova_compute_host: "{{ ansible_docker0['ipv4']['address'] }}"
-      neutron_identity_host: "{{ ansible_docker0['ipv4']['address'] }}"
-      neutron_compute_host: "{{ ansible_docker0['ipv4']['address'] }}"
-      neutron_network_host: "{{ ansible_docker0['ipv4']['address'] }}"
-    }
+    #ansible.extra_vars = {
+    #  keystone_identity_host: "{{ ansible_docker0['ipv4']['address'] }}"
+    #  nova_identity_host: "{{ ansible_docker0['ipv4']['address'] }}"
+    #  nova_compute_host: "{{ ansible_docker0['ipv4']['address'] }}"
+    #  neutron_identity_host: "{{ ansible_docker0['ipv4']['address'] }}"
+    #  neutron_compute_host: "{{ ansible_docker0['ipv4']['address'] }}"
+    #  neutron_network_host: "{{ ansible_docker0['ipv4']['address'] }}"
+    #}
   end
 
   config.vm.provision "ansible" do |ansible|
     ansible.playbook = "deploy.yml"
     ansible.extra_vars = {
-      neutron_network_dockerized_deployment: true,
-      neutron_rabbitmq_host: "{{ ansible_docker0['ipv4']['address'] }}",
-      neutron_identity_host: "{{ ansible_docker0['ipv4']['address'] }}"
-      neutron_compute_host: "{{ ansible_docker0['ipv4']['address'] }}"
-      neutron_network_host: "{{ ansible_docker0['ipv4']['address'] }}"
+      #neutron_network_dockerized_deployment: true,
+      #neutron_rabbitmq_host: "{{ ansible_docker0['ipv4']['address'] }}",
+      #neutron_identity_host: "{{ ansible_docker0['ipv4']['address'] }}"
+      #neutron_compute_host: "{{ ansible_docker0['ipv4']['address'] }}"
+      #neutron_network_host: "{{ ansible_docker0['ipv4']['address'] }}"
       neutron_network_external_name: "public",
       neutron_network_external_device: "eth1",
       neutron_network_external_ip: "10.1.0.4",
