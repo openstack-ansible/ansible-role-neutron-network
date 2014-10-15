@@ -45,7 +45,8 @@ neutron_network_public_url: http://{{ neutron_network_host }}:9696
 
 neutron_network_external_device: eth0
 neutron_network_external_ip: 192.168.0.1
-neutron_network_external_network: 192.168.0.0/24
+neutron_network_external_netmask: 24
+neutron_network_external_network: "{{ neutron_network_external_ip }}/{{ neutron_network_external_netmask }}"
 neutron_network_external_name: public
 neutron_network_external_dns_servers: 8.8.8.8
 neutron_network_external_allocation_pool_start: 192.168.0.100

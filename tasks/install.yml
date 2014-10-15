@@ -7,7 +7,9 @@
   with_items:
     - { name: net.ipv4.ip_forward, value: 1 }
     - { name: net.ipv4.conf.all.rp_filter, value: 0 }
+    - { name: net.ipv4.conf.all.forwarding, value: 1 }
     - { name: net.ipv4.conf.default.rp_filter, value: 0 }
+    - { name: net.ipv4.conf.default.forwarding, value: 1 }
 
 - name: ensure neutron network packages and dependencies are installed
   apt: 

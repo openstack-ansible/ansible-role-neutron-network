@@ -161,6 +161,8 @@
 #  when: modify_dnsmasq_neutron_conf|changed and 
 #        neutron_network_dockerize_context is not defined
 
+- command: rm -f /var/log/neutron/*
+
 - name: restart neutron network if necessary
   service:
     name: "{{ item }}"

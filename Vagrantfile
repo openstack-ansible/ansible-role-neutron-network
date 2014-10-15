@@ -19,9 +19,8 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   config.vm.define "network" do |machine|
     machine.vm.network :private_network, ip: "10.1.0.2",
                        :netmask => "255.255.0.0"
-    machine.vm.hostname = "network"
     machine.vm.provider :virtualbox do |v|
-      v.customize ["modifyvm", :id, "--memory", 1280]
+      v.customize ["modifyvm", :id, "--memory", 2048]
       v.customize ["modifyvm", :id, "--nicpromisc2", "allow-vms"]
     end
   end
@@ -53,7 +52,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
       neutron_network_external_name: "public",
       neutron_network_external_device: "eth1",
       neutron_network_external_ip: "10.1.0.2",
-      neutron_network_external_network: "10.1.0.0/16",
+      neutron_network_external_netmask: "16",
       neutron_network_external_allocation_pool_start: "10.1.0.100",
       neutron_network_external_allocation_pool_end: "10.1.0.200",
       neutron_network_external_dns_servers: "8.8.8.8"
