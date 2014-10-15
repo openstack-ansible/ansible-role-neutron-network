@@ -36,7 +36,7 @@
     - { section: DEFAULT, option: service_plugins, value: router }
     - { section: DEFAULT, option: allow_overlapping_ips, value: true }
     - { section: keystone_authtoken, option: auth_uri, 
-        value: "{{ neutron_identity_auth_url }}" }
+        value: "{{ neutron_identity_admin_url }}" }
     - { section: keystone_authtoken, option: auth_host, 
         value: "{{ neutron_identity_host }}" }
     - { section: keystone_authtoken, option: auth_port, value: 35357 }
@@ -114,7 +114,7 @@
     - { section: DEFAULT, option: debug, value: "{{ neutron_log_debug }}" }
     - { section: DEFAULT, option: log_dir, value: "{{ neutron_log_dir }}" }
     - { section: DEFAULT, 
-        option: auth_url, value: "{{ neutron_identity_auth_url }}" }
+        option: auth_url, value: "{{ neutron_identity_admin_url }}" }
     - { section: DEFAULT, 
         option: auth_region, value: "{{ neutron_identity_region }}" }
     - { section: DEFAULT, option: admin_tenant_name, value: service }
