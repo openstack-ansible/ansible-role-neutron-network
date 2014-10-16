@@ -41,6 +41,7 @@
   ini_file:
     dest: /etc/neutron/l3_agent.ini
     group: neutron
+    mode: 0640
     section: "{{ item.section }}"
     option: "{{ item.option }}"
     value: "{{ item.value }}"
@@ -58,6 +59,7 @@
   ini_file:
     dest: /etc/neutron/dhcp_agent.ini
     group: neutron
+    mode: 0640
     section: "{{ item.section }}"
     option: "{{ item.option }}"
     value: "{{ item.value }}"
@@ -118,6 +120,7 @@
   ini_file:
     dest: /etc/neutron/plugins/ml2/ml2_conf.ini
     group: neutron
+    mode: 0640
     section: "{{ item.section }}"
     option: "{{ item.option }}"
     value: "{{ item.value }}"
