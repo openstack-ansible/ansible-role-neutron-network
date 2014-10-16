@@ -1,6 +1,10 @@
 #!/bin/sh
-ip addr del {{ neutron_network_external_network }} dev {{ neutron_network_external_device }}
-ip link set {{ neutron_network_external_device }} up
-ip link set {{ neutron_network_external_device }} promisc on
-ip addr add {{ neutron_network_external_network }} dev br-ex
+ip addr del \
+  {{ openstack_network_external_ip }}/{{ openstack_network_external_netmask }} \
+  dev {{ openstack_network_external_device }}
+ip link set {{ openstack_network_external_device }} up
+ip link set {{ openstack_network_external_device }} promisc on
+ip addr add \
+  {{ openstack_network_external_ip }}/{{ openstack_network_external_netmask }} \
+  dev br-ex
 ip link set br-ex up

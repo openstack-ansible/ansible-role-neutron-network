@@ -1,11 +1,11 @@
 ---
 - name: ensure external network is registered
   neutron_network:
-    auth_url: "{{ neutron_identity_internal_url }}"
+    auth_url: "{{ openstack_identity_internal_url }}"
     login_tenant_name: admin
     login_username: admin
-    login_password: "{{ neutron_identity_admin_password }}"
-    name: "{{ neutron_network_external_name }}"
+    login_password: "{{ openstack_identity_admin_password }}"
+    name: "{{ openstack_network_external_name }}"
     provider_network_type: gre
     provider_segmentation_id: 1
     router_external: true
@@ -14,16 +14,16 @@
 
 - name: ensure subnet for external network is registered
   neutron_subnet:
-    auth_url: "{{ neutron_identity_internal_url }}"
+    auth_url: "{{ openstack_identity_internal_url }}"
     login_tenant_name: admin
     login_username: admin
-    login_password: "{{ neutron_identity_admin_password }}"
-    name: "{{ neutron_network_external_name }}-subnet"
-    network_name: "{{ neutron_network_external_name }}"
-    cidr: "{{ neutron_network_external_network }}"
+    login_password: "{{ openstack_identity_admin_password }}"
+    name: "{{ openstack_network_external_name }}-subnet"
+    network_name: "{{ openstack_network_external_name }}"
+    cidr: "{{ openstack_network_external_network }}"
     enable_dhcp: false
-    gateway_ip: "{{ neutron_network_external_ip }}"
-    dns_nameservers: "{{ neutron_network_external_dns_servers }}"
-    allocation_pool_start: "{{ neutron_network_external_allocation_pool_start }}"
-    allocation_pool_end: "{{ neutron_network_external_allocation_pool_end }}"
+    gateway_ip: "{{ openstack_network_external_ip }}"
+    dns_nameservers: "{{ openstack_network_external_dns_servers }}"
+    allocation_pool_start: "{{ openstack_network_external_allocation_pool_start }}"
+    allocation_pool_end: "{{ openstack_network_external_allocation_pool_end }}"
     state: present

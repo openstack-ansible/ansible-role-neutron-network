@@ -7,9 +7,7 @@
   with_items:
     - { name: net.ipv4.ip_forward, value: 1 }
     - { name: net.ipv4.conf.all.rp_filter, value: 0 }
-    - { name: net.ipv4.conf.all.forwarding, value: 1 }
     - { name: net.ipv4.conf.default.rp_filter, value: 0 }
-    - { name: net.ipv4.conf.default.forwarding, value: 1 }
 
 - name: ensure neutron network packages and dependencies are installed
   apt: 
@@ -23,38 +21,6 @@
     - neutron-metadata-agent
     - neutron-plugin-ml2
     - neutron-plugin-openvswitch-agent
-    - openvswitch-datapath-dkms
-
-- name: ensure that neutron directories exist and have correct permissions
-  file:
-    path: "{{ item }}"
-    owner: neutron
-    group: neutron
-    mode: 0700
-    state: directory
-  with_items:
-    - /etc/neutron
-    - /var/lib/neutron
-    - /var/run/neutron
-    - /var/lock/neutron
-    - /var/log/neutron
-
-- name: ensure supervisor is installed for dockerized deployments 
-  apt: 
-    pkg: "{{ item }}"
-    state: latest 
-    update_cache: yes 
-    cache_valid_time: 600
-  with_items:
-    - supervisor
-
-- name: update supervisor configuration from template for dockerized deployments
-  template:
-    src: etc/supervisor/conf.d/supervisord.conf
-    dest: /etc/supervisor/conf.d/supervisord.conf
-    owner: root
-    group: root
-    mode: 0644
 
 - name: ensure neutron network is started and enabled
   service: 
@@ -108,5 +74,24 @@
     - neutron-dhcp-agent
     - neutron-metadata-agent
     - openvswitch-switch
+  when: neutron_network_dockerize_context is defined
+
+- name: ensure supervisor is installed for dockerized deployments 
+  apt: 
+    pkg: "{{ item }}"
+    state: latest 
+    update_cache: yes 
+    cache_valid_time: 600
+  with_items:
+    - supervisor
+  when: neutron_network_dockerize_context is defined
+
+- name: update supervisor configuration from template for dockerized deployments
+  template:
+    src: etc/supervisor/conf.d/supervisord.conf
+    dest: /etc/supervisor/conf.d/supervisord.conf
+    owner: root
+    group: root
+    mode: 0644
   when: neutron_network_dockerize_context is defined
 

@@ -7,7 +7,7 @@
 - include: install.yml
   when: not neutron_network_dockerized_deployment 
 
-- include: offline_configuration.yml
+- include: configure.yml
   when: not neutron_network_dockerized_deployment 
 
 - include: neutron.yml
