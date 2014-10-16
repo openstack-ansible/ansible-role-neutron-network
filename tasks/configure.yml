@@ -2,7 +2,6 @@
 - name: ensure neutron.conf is properly configured
   ini_file:
     dest: /etc/neutron/neutron.conf
-    group: neutron
     mode: 0640
     section: "{{ item.section }}"
     option: "{{ item.option }}"
@@ -40,8 +39,6 @@
 - name: ensure l3_agent.ini is properly configured
   ini_file:
     dest: /etc/neutron/l3_agent.ini
-    group: neutron
-    mode: 0644
     section: "{{ item.section }}"
     option: "{{ item.option }}"
     value: "{{ item.value }}"
@@ -58,8 +55,6 @@
 - name: ensure dhcp_agent.ini is properly configured
   ini_file:
     dest: /etc/neutron/dhcp_agent.ini
-    group: neutron
-    mode: 0644
     section: "{{ item.section }}"
     option: "{{ item.option }}"
     value: "{{ item.value }}"
@@ -83,7 +78,7 @@
     group: neutron
     mode: 0644
     create: yes
-    regexp: ^dchp-option-force=
+    regexp: ^dchp-option-force=26,1454
     line: dhcp-option-force=26,1454
     state: present 
   register: modify_dnsmasq_neutron_conf
@@ -91,7 +86,6 @@
 - name: ensure metadata_agent.ini is properly configured
   ini_file:
     dest: /etc/neutron/metadata_agent.ini
-    group: neutron
     mode: 0640
     section: "{{ item.section }}"
     option: "{{ item.option }}"
@@ -118,8 +112,6 @@
 - name: ensure ml2_conf.ini is properly configured
   ini_file:
     dest: /etc/neutron/plugins/ml2/ml2_conf.ini
-    group: neutron
-    mode: 0640
     section: "{{ item.section }}"
     option: "{{ item.option }}"
     value: "{{ item.value }}"
@@ -160,5 +152,4 @@
   file:
     dest: /var/lib/neutron/neutron.sqlite
     state: absent
-
 

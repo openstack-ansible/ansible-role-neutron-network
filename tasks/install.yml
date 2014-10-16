@@ -60,7 +60,7 @@
 - name: ensure that port connects external bridge to physical interface
   openvswitch_port:
     bridge: br-ex
-    port: "{{ neutron_network_external_device }}"
+    port: "{{ openstack_network_external_device }}"
     state: present
 
 - name: ensure neutron network is properly shut down for dockerized deployments
