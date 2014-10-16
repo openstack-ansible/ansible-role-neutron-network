@@ -45,7 +45,7 @@ openstack_network_public_url: http://{{ openstack_network_endpoint_host }}:9696
 openstack_network_external_device: eth0
 openstack_network_external_ip: 192.168.0.1
 openstack_network_external_netmask: 24
-openstack_network_external_network_name: public
+openstack_network_external_name: public
 openstack_network_external_dns_servers: 8.8.8.8
 openstack_network_external_allocation_pool_start: 192.168.0.100
 openstack_network_external_allocation_pool_end: 192.168.0.200

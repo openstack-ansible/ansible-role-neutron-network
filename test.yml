@@ -19,23 +19,23 @@
 
     - name: create demo tenant
       keystone_user:
-        endpoint: "{{ neutron_identity_admin_url }}"
-        token: "{{ neutron_identity_admin_token }}"
+        endpoint: "{{ openstack_identity_admin_url }}"
+        token: "{{ openstack_identity_admin_token }}"
         tenant: demo
         tenant_description: "Demo Tenant"
 
     - name: create demo user
       keystone_user:
-        endpoint: "{{ neutron_identity_admin_url }}"
-        token: "{{ neutron_identity_admin_token }}"
+        endpoint: "{{ openstack_identity_admin_url }}"
+        token: "{{ openstack_identity_admin_token }}"
         tenant: demo
         user: demo
         password: "{{ openstack_identity_demo_password }}"
 
     - name: associate _member_ role with demo user
       keystone_user:
-        endpoint: "{{ neutron_identity_admin_url }}"
-        token: "{{ neutron_identity_admin_token }}"
+        endpoint: "{{ openstack_identity_admin_url }}"
+        token: "{{ openstack_identity_admin_token }}"
         tenant: demo
         user: demo
         role: _member_
@@ -52,15 +52,15 @@
 
     - name: ensure demo user has admin role
       keystone_user:
-        endpoint: "{{ neutron_identity_admin_url }}"
-        token: "{{ neutron_identity_admin_token }}"
+        endpoint: "{{ openstack_identity_admin_url }}"
+        token: "{{ openstack_identity_admin_token }}"
         tenant: demo
         user: demo
         role: admin
 
     - name: ensure internal network is registered
       neutron_network:
-        auth_url: "{{ neutron_identity_public_url }}"
+        auth_url: "{{ openstack_identity_public_url }}"
         login_tenant_name: demo
         login_username: demo
         login_password: "{{ openstack_identity_demo_password }}"
@@ -71,7 +71,7 @@
 
     - name: ensure subnet internal network is registered
       neutron_subnet:
-        auth_url: "{{ neutron_identity_public_url }}"
+        auth_url: "{{ openstack_identity_public_url }}"
         login_tenant_name: demo
         login_username: demo
         login_password: "{{ openstack_identity_demo_password }}"
@@ -87,7 +87,7 @@
 
     - name: ensure router exists
       neutron_router:
-        auth_url: "{{ neutron_identity_public_url }}"
+        auth_url: "{{ openstack_identity_public_url }}"
         login_tenant_name: demo
         login_username: demo
         login_password: "{{ openstack_identity_demo_password }}"
@@ -97,26 +97,26 @@
 
     - name: ensure router has interface connected to internal network
       neutron_router_interface:
-        auth_url: "{{ neutron_identity_public_url }}"
+        auth_url: "{{ openstack_identity_public_url }}"
         login_tenant_name: demo
         login_username: demo
         login_password: "{{ openstack_identity_demo_password }}"
         tenant_name: demo
-        openstack_router_name: "{{ openstack_router_name }}"
+        router_name: "{{ openstack_router_name }}"
         subnet_name: "{{ openstack_network_internal_subnet_name }}"
         state: present
 
     - name: ensure router has external network gateway
       neutron_router_gateway:
-        auth_url: "{{ neutron_identity_public_url }}"
+        auth_url: "{{ openstack_identity_public_url }}"
         login_tenant_name: demo
         login_username: demo
         login_password: "{{ openstack_identity_demo_password }}"
         router_name: "{{ openstack_router_name }}"
-        network_name: "{{ neutron_network_external_name }}"
+        network_name: "{{ openstack_network_external_name }}"
         state: present
 
     - name: ping router external interface to verify connectivity
-      command: ping -c 4 {{ neutron_network_external_router_ip }}
+      command: ping -c 4 {{ openstack_network_external_router_ip }}
       changed_when: false
 
