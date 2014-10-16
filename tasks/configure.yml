@@ -81,6 +81,7 @@
     owner: root
     group: neutron
     mode: 0644
+    create: yes
     regexp: ^dhcp-option-force=
     line: dhcp-option-force=26,1454
     state: present 
