@@ -143,15 +143,8 @@
   when: modify_dnsmasq_neutron_conf|changed
   ignore_errors: yes
 
-- name: restart neutron network if necessary
-  service:
-    name: "{{ item }}"
-    state: restarted
-  with_items:
-    - neutron-plugin-openvswitch-agent
-    - neutron-l3-agent
-    - neutron-dhcp-agent
-    - neutron-metadata-agent
+- name: restart neutron services if changes are made to configuration files
+  shell: ls /etc/init/neutron-* | grep -v ovs | while read initconf; do service $(basename ${initconf} .conf) restart; done
   when: (modify_neutron_conf|changed or modify_l3_agent_ini|changed or 
          modify_dhcp_agent_ini|changed or modify_metadata_agent_ini|changed or 
          modify_ml2_ini|changed) and
