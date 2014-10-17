@@ -1,4 +1,10 @@
 ---
+- name: wait for the neutron services to be ready
+  wait_for:
+    delay: 1
+    host: "{{ openstack_network_endpoint_host }}"
+    port: 9696
+
 - name: ensure external network is registered
   neutron_network:
     auth_url: "{{ openstack_identity_internal_url }}"
