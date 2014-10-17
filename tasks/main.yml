@@ -1,6 +1,4 @@
 ---
-- include: rabbitmq.yml
-
 - include: docker.yml
   when: neutron_network_dockerized_deployment
 
