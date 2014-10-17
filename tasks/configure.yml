@@ -130,7 +130,7 @@
     - { section: ml2, option: mechanism_drivers, value: openvswitch }
     - { section: ml2_type_gre, option: tunnel_id_ranges, value: "1:1000" }
     - { section: ovs, option: local_ip, 
-        value: "{{ openstack_network_external_ip }}" }
+        value: "{{ openstack_network_node_ip }}" }
     - { section: ovs, option: tunnel_type, value: gre }
     - { section: ovs, option: enable_tunneling, value: true }
     - { section: securitygroup, option: firewall_driver, 
