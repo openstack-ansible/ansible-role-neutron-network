@@ -117,6 +117,6 @@
         state: present
 
     - name: ping router external interface to verify connectivity
-      command: ping -c 4 {{ openstack_network_external_router_ip }}
+      command: ping -c 4 {{ openstack_network_external_allocation_pool_start }}
       changed_when: false
 

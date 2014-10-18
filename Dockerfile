@@ -4,15 +4,15 @@ MAINTAINER Mark Stillwell <mark@stillwell.me>
 COPY . /var/cache/docker/neutron-network
 WORKDIR /var/cache/docker/neutron-network
 
-RUN if [ ! -f playbooks/group_vars/all.yml ]; then \
-      mkdir -p playbooks/group_vars;\
-      ln -s ../../defaults/main.yml playbooks/group_vars/all.yml;\
+RUN if [ ! -f provisioning/group_vars/all.yml ]; then \
+      mkdir -p provisioning/group_vars;\
+      ln -s ../../defaults/main.yml provisioning/group_vars/all.yml;\
     fi
-RUN ansible-playbook -i inventories/local.ini playbooks/install.yml
+RUN ansible-playbook -i inventories/local.ini provisioning/install.yml
 
 VOLUME [ "/etc/neutron", "/var/lib/neutron", "/var/log/neutron", \
          "/var/log/supervisor" ]
 
 CMD [ "/usr/bin/supervisord" ]
 
-EXPOSE 9696
+#EXPOSE 9696

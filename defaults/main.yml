@@ -32,27 +32,31 @@ openstack_rabbitmq_port: 5672
 openstack_log_verbose: true
 openstack_log_debug: false
 
-openstack_identity_endpoint_host: 127.0.0.1
-openstack_identity_admin_url: http://{{ openstack_identity_endpoint_host }}:35357/v2.0
-openstack_identity_internal_url: http://{{ openstack_identity_endpoint_host }}:5000/v2.0
-openstack_identity_public_url: http://{{ openstack_identity_endpoint_host }}:5000/v2.0
+openstack_identity_endpoint_host: "{{ ansible_eth0.ipv4.address }}"
+openstack_identity_admin_url: >
+  http://{{ openstack_identity_endpoint_host }}:35357/v2.0
+openstack_identity_internal_url: >
+  http://{{ openstack_identity_endpoint_host }}:5000/v2.0
+openstack_identity_public_url: >
+  http://{{ openstack_identity_endpoint_host }}:5000/v2.0
 
-openstack_compute_endpoint_host: 127.0.0.1
+openstack_compute_endpoint_host: "{{ ansible_eth0.ipv4.address }}"
 
-openstack_network_endpoint_host: 127.0.0.1
+openstack_network_endpoint_host: "{{ ansible_eth0.ipv4.address }}"
 openstack_network_admin_url: http://{{ openstack_network_endpoint_host }}:9696
-openstack_network_internal_url: http://{{ openstack_network_endpoint_host }}:9696
+openstack_network_internal_url: >
+  http://{{ openstack_network_endpoint_host }}:9696
 openstack_network_public_url: http://{{ openstack_network_endpoint_host }}:9696
 
-openstack_network_node_ip: 127.0.0.1
+openstack_network_node_ip: "{{ ansible_eth0.ipv4.address }}"
 
 openstack_network_external_device: eth0
-openstack_network_external_ip: 192.168.0.1
-openstack_network_external_netmask: 24
+openstack_network_external_ip: 10.1.0.2
+openstack_network_external_netmask: 16
 openstack_network_external_name: public
 openstack_network_external_dns_servers: 8.8.8.8
-openstack_network_external_allocation_pool_start: 192.168.0.100
-openstack_network_external_allocation_pool_end: 192.168.0.200
+openstack_network_external_allocation_pool_start: 10.1.0.100
+openstack_network_external_allocation_pool_end: 10.1.0.200
 
 openstack_default_region: RegionOne
 
@@ -61,3 +65,4 @@ neutron_network_dockerized_deployment: false
 neutron_network_docker_username: default
 neutron_network_docker_imagename: neutron-network
 neutron_network_docker_containername: neutron-network
+
