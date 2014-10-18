@@ -3,10 +3,7 @@
 - /.git
 - /.gitignore
 - /.vagrant
-+ /deploy.yml
-- /*.yml
-- /group_vars
 - /private
 - /roles
-- /templates/admin.openrc
+- /templates/*.openrc
 - /templates/ansible_cache
