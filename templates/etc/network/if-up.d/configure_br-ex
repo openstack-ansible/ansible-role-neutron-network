@@ -1,5 +1,5 @@
 #!/bin/bash
-netconfigs=$(ip addr show dev {{ openstack_network_external_device }} | perl -lne 'print "$1,$2" if /^\s*inet\s+((?:[0-9]{1,3}\.){3}[0-9]{1,3}\/[0-9]+)\s+brd\s+((?:[0-9]{1,3}\.){3}[0-9]{1,3})/')
+netconfigs=$(ip addr show dev {{ openstack_network_external_device }} | perl -lne 'print "$1,$2" if /^\s*inet\s+((?:[0-9]{1,3}\.){3}[0-9]{1,3}\/[0-9]+)\s+brd\s+((?:[0-9]{1,3}\.){3}[0-9]{1,3})?/')
 for netconfig in $netconfigs; do
     IFS=',' read ipaddr broadcast <<< "$netconfig"
     ip addr del $ipaddr dev {{ openstack_network_external_device }}
@@ -8,7 +8,11 @@ ip link set {{ openstack_network_external_device }} up
 ip link set {{ openstack_network_external_device }} promisc on
 for netconfig in $netconfigs; do
     IFS=',' read ipaddr broadcast <<< "$netconfig"
-    ip addr add $ipaddr broadcast $broadcast dev br-ex
+    if [ -n "$broadcast" ]; then
+        ip addr add $ipaddr broadcast $broadcast dev br-ex
+    else
+        ip addr add $ipaddr dev br-ex
+    fi
 done
 ip addr add {{ openstack_network_external_ip }}/{{ openstack_network_external_netmask }} dev br-ex
 ip link set br-ex up
