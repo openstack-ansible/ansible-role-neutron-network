@@ -1,5 +1,5 @@
 #!/bin/bash
-netconfigs=$(ip addr show dev {{ openstack_network_external_device }} | perl -lne 'print "$1,$2" if /^\s*inet\s+((?:[0-9]{1,3}\.){3}[0-9]\/[0-9]+)\s+brd\s+((?:[0-9]{1,3}\.){3}[0-9])/')
+netconfigs=$(ip addr show dev {{ openstack_network_external_device }} | perl -lne 'print "$1,$2" if /^\s*inet\s+((?:[0-9]{1,3}\.){3}[0-9]\/[0-9]+)\s+brd\s+((?:[0-9]{1,3}\.){3}[0-9]{1,3})/')
 for netconfig in $netconfigs; do
     IFS=',' read ipaddr broadcast <<< "$netconfig"
     ip addr del $ipaddr dev {{ openstack_network_external_device }}
