@@ -14,5 +14,5 @@ for netconfig in $netconfigs; do
         ip addr add $ipaddr dev br-ex
     fi
 done
-ip addr add {{ openstack_network_external_network }} dev br-ex
+ip addr add {{ openstack_network_external_ip }}/{{ openstack_network_external_netmask }} dev br-ex
 ip link set br-ex up
