@@ -57,11 +57,11 @@
   command: /etc/network/if-up.d/configure_br-ex
   when: update_network_configure_script|changed
 
-- name: ensure that port connects external bridge to physical interface
-  openvswitch_port:
-    bridge: br-ex
-    port: "{{ openstack_network_external_device }}"
-    state: present
+#- name: ensure that port connects external bridge to physical interface
+#  openvswitch_port:
+#    bridge: br-ex
+#    port: "{{ openstack_network_external_device }}"
+#    state: present
 
 - name: ensure neutron network is properly shut down for dockerized deployments
   service:

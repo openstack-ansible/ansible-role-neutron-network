@@ -16,3 +16,4 @@ for netconfig in $netconfigs; do
 done
 ip addr add {{ openstack_network_external_ip }}/{{ openstack_network_external_netmask }} dev br-ex
 ip link set br-ex up
+ovs-vsctl --may-exist add-port br-ex {{ openstack_network_external_device }}
