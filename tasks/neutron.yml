@@ -27,7 +27,7 @@
     name: "{{ openstack_network_external_name }}-subnet"
     network_name: "{{ openstack_network_external_name }}"
     cidr: >
-      {{ openstack_network_external_ip }}/{{ openstack_network_external_netmask }}
+      {{ openstack_network_external_network }}
     enable_dhcp: false
     gateway_ip: "{{ openstack_network_external_ip }}"
     dns_nameservers: "{{ openstack_network_external_dns_servers }}"
