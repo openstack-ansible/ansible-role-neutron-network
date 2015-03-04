@@ -10,14 +10,16 @@ ip link set {{ openstack_network_external_device }} promisc on
 for netconfig in $netconfigs; do
     IFS=',' read ipaddr broadcast <<< "$netconfig"
     if [ -n "$broadcast" ]; then
-        ip addr add $ipaddr broadcast $broadcast dev br-ex
+        ip addr add $ipaddr broadcast $broadcast dev br-ex 2>/dev/null
     else
-        ip addr add $ipaddr dev br-ex
+        ip addr add $ipaddr dev br-ex 2>/dev/null
     fi
 done
-ip addr add {{ openstack_network_external_ip }}/{{ openstack_network_external_netmask }} dev br-ex
+ip addr add {{ openstack_network_external_ip }}/{{ openstack_network_external_netmask }} dev br-ex || true
 ip link set br-ex up
 ovs-vsctl --may-exist add-port br-ex {{ openstack_network_external_device }}
 if [ -n "$gateway" ]; then
-    ip route add default via $gateway
+    ip route add default via $gateway 2>/dev/null
 fi
+
+exit 0
