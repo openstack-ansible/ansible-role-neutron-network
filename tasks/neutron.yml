@@ -6,6 +6,8 @@
     port: 9696
 
 - name: ensure external network is registered
+  environment:
+    http_proxy: ''
   neutron_network:
     auth_url: "{{ openstack_identity_internal_url }}"
     login_tenant_name: admin
@@ -19,6 +21,8 @@
     state: present
 
 - name: ensure subnet for external network is registered
+  environment:
+    http_proxy: ''
   neutron_subnet:
     auth_url: "{{ openstack_identity_internal_url }}"
     login_tenant_name: admin
