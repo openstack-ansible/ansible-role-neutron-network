@@ -33,7 +33,7 @@
     cidr: >
       {{ openstack_network_external_network }}
     enable_dhcp: false
-    gateway_ip: "{{ openstack_network_external_ip }}"
+    gateway_ip: "{{ openstack_network_external_gateway }}"
     dns_nameservers: "{{ openstack_network_external_dns_servers }}"
     allocation_pool_start: >
       {{ openstack_network_external_allocation_pool_start }}
