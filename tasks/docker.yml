@@ -63,9 +63,7 @@
             "{{ openstack_identity_neutron_password }}",
           "openstack_default_region" : "{{ openstack_default_region }}",
           "openstack_compute_metadata_secret" : 
-            "{{ openstack_compute_metadata_secret }}",
-          "openstack_network_external_ip" : 
-            "{{ openstack_network_external_ip }}" }'
+            "{{ openstack_compute_metadata_secret }}" }'
     detach: no
     state: present
 
