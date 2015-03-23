@@ -29,7 +29,7 @@ openstack_compute_metadata_secret: >
 openstack_rabbitmq_host: 127.0.0.1
 openstack_rabbitmq_port: 5672
 
-openstack_log_verbose: false
+openstack_log_verbose: true
 openstack_log_debug: false
 
 openstack_identity_endpoint_host: "{{ ansible_eth0.ipv4.address }}"
