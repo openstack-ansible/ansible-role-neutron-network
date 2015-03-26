@@ -26,7 +26,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
       openstack_network_external_network: "10.0.2.0/24",
       openstack_network_external_gateway: "10.0.2.15",
       openstack_network_external_allocation_pool_start: "10.0.2.100",
-      openstack_network_external_allocation_pool_end: "10.0.0.200"
+      openstack_network_external_allocation_pool_end: "10.0.2.200"
     }
     ansible.playbook = "provisioning/deploy.yml"
   end
