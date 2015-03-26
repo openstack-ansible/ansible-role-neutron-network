@@ -105,7 +105,7 @@
     - { section: DEFAULT, 
         option: auth_url, value: "{{ openstack_identity_internal_url }}" }
     - { section: DEFAULT, 
-        option: auth_region, value: "{{ openstack_default_region }}" }
+        option: auth_region, value: "{{ openstack_identity_region }}" }
     - { section: DEFAULT, option: admin_tenant_name, value: service }
     - { section: DEFAULT, option: admin_user, value: neutron }
     - { section: DEFAULT, option: admin_password, 

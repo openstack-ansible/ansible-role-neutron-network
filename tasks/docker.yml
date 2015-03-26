@@ -61,7 +61,7 @@
             "{{ openstack_identity_internal_url }}",
           "openstack_identity_neutron_password" : 
             "{{ openstack_identity_neutron_password }}",
-          "openstack_default_region" : "{{ openstack_default_region }}",
+          "openstack_identity_region" : "{{ openstack_identity_region }}",
           "openstack_compute_metadata_secret" : 
             "{{ openstack_compute_metadata_secret }}" }'
     detach: no
