@@ -34,6 +34,9 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   end
 
   config.vm.provision "ansible" do |ansible|
+    ansible.extra_vars = {
+      openstack_network_local_ip: "{{ ansible_eth1.ipv4.address }}"
+    }
     ansible.playbook = "provisioning/deploy.yml"
   end
 
