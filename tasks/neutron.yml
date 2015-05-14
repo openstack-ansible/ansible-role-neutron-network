@@ -8,6 +8,7 @@
 - name: ensure external network is registered
   environment:
     http_proxy: ''
+    HTTP_PROXY: ''
   neutron_network:
     auth_url: "{{ openstack_identity_internal_url }}"
     login_tenant_name: admin
@@ -23,6 +24,7 @@
 - name: ensure subnet for external network is registered
   environment:
     http_proxy: ''
+    HTTP_PROXY: ''
   neutron_subnet:
     auth_url: "{{ openstack_identity_internal_url }}"
     login_tenant_name: admin
