@@ -1,28 +1,23 @@
-marklee77.neutron-network
-=========================
+neutron-network ansible role
+============================
 
-[![Build Status](https://travis-ci.org/marklee77/ansible-role-neutron-network.svg?branch=master)](https://travis-ci.org/marklee77/ansible-role-neutron-network)
-
-The purpose of this role is to deploy neutron-network onto Ubuntu. There is
-also support for an experimental "dockerized" deployment. This dockerized
-deployment copies the role to the target machine and uses the original
-ansible-based functionality to build a docker image, and then uses recent
-ansible features to manage the running service. The dockerized deployment can
-theoretically deploy to any Linux platform with a running docker install and
-the docker-py python client library installed.
-
-Travis status above refers only to the non-dockerized deployment, as docker does 
-not (easily) run on travis.
+The purpose of this role is to deploy neutron-network onto Ubuntu. 
 
 Role Variables
 --------------
 
-The variables below only affect the dockerized deployment:
-
-- neutron_network_dockerized_deployment: false
-- neutron_network_docker_username: default
-- neutron_network_docker_imagename: neutron-network
-- neutron_network_docker_containername: nova
+- openstack_rabbitmq_host: 127.0.0.1
+- openstack_rabbitmq_port: 5672
+- openstack_log_verbose: true
+- openstack_log_debug: false
+- openstack_network_external_device: eth0
+- openstack_network_external_name: public
+- openstack_network_external_network: 10.1.0.0/16
+- openstack_network_external_gateway: 10.1.0.1
+- openstack_network_external_dns_servers: 8.8.8.8
+- openstack_network_external_allocation_pool_start: 10.1.0.100
+- openstack_network_external_allocation_pool_end: 10.1.0.200
+- openstack_identity_region: RegionOne
 
 Example Playbook
 -------------------------
@@ -30,7 +25,7 @@ Example Playbook
     - hosts: all
       sudo: True
       roles:
-        - marklee77.neutron-network
+        - neutron-network
 
 License
 -------
@@ -41,18 +36,3 @@ Author Information
 ------------------
 
 http://stillwell.me
-
-Known Issues
-------------
-
-- the dockerized deployment still requires sudo access, even though a member of 
-  the docker group should be able to build and deploy containers without sudo.
-
-Todo
-----
-
-- metadata...
-- separate nova-api from neutron-network?
-- delegate_to in order to allow for installing on hosts different from neutron-network host...
-- consider making mapping of neutron-network port to host interface optional
-- eventually, we're going to need a better way to pass in variables...

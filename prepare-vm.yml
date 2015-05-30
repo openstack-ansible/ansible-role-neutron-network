@@ -1,0 +1,10 @@
+---
+- hosts: all
+  gather_facts: True
+  sudo: True
+  roles:
+    - mysql
+    - rabbitmq-server
+    - keystone
+    - nova-controller
+    - neutron-controller

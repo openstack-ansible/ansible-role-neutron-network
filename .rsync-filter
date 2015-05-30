@@ -1,9 +1,0 @@
-- /Vagrantfile
-- /.dockerignore
-- /.git
-- /.gitignore
-- /.vagrant
-- /private
-- /roles
-- /templates/*.openrc
-- /templates/ansible_cache

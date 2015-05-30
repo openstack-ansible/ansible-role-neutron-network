@@ -1,6 +1,6 @@
+.*.swp
 .vagrant
-library/*
 private
-provisioning/library
+library
 roles/*
-!roles/marklee77.neutron-network
+!roles/neutron-network
