@@ -41,4 +41,3 @@
       {{ openstack_network_external_allocation_pool_start }}
     allocation_pool_end: "{{ openstack_network_external_allocation_pool_end }}"
     state: present
-
