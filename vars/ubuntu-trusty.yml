@@ -1,0 +1,31 @@
+openstack_neutron_network_package_info:
+  pkg_mgr: apt
+  args:
+    pkg: "{{ item }}"
+    update_cache: yes
+    cache_valid_time: 600
+    state: latest
+  pre_pkgs: []
+  pkgs:
+    - neutron-dhcp-agent
+    - neutron-l3-agent
+    - neutron-metadata-agent
+    - neutron-plugin-ml2
+    - neutron-plugin-openvswitch-agent
+
+openstack_neutron_network_repo_info:
+  pkg_repo: apt_repository
+  args:
+    repo: "{{ item }}"
+    update_cache: yes
+    state: present
+  repos: []
+
+openstack_neutron_network_required_services:
+  - openvswitch-switch
+
+openstack_neutron_network_services:
+  - neutron-plugin-openvswitch-agent
+  - neutron-l3-agent
+  - neutron-dhcp-agent
+  - neutron-metadata-agent

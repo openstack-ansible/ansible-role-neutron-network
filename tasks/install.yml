@@ -1,4 +1,10 @@
 ---
+- name: ensure openstack neutron network requirements packages are installed
+  action: "{{ openstack_neutron_network_package_info.pkg_mgr }}"
+  args: openstack_neutron_network_package_info.args
+  with_items: openstack_neutron_network_package_info.pre_pkgs
+  when: openstack_neutron_network_package_info.pre_pkgs|length > 0
+
 - name: ensure sysctl is appropriately configured
   sysctl:
     name: "{{ item.name }}"
@@ -9,30 +15,24 @@
     - { name: net.ipv4.conf.all.rp_filter, value: 0 }
     - { name: net.ipv4.conf.default.rp_filter, value: 0 }
 
-- name: ensure neutron network packages and dependencies are installed
-  apt: 
-    pkg: "{{ item }}"
-    state: latest 
-    update_cache: yes 
-    cache_valid_time: 600
-  with_items:
-    - neutron-dhcp-agent
-    - neutron-l3-agent
-    - neutron-metadata-agent
-    - neutron-plugin-ml2
-    - neutron-plugin-openvswitch-agent
+- name: ensure openstack repository is enabled
+  action: "{{ openstack_neutron_network_repo_info.pkg_repo }}"
+  args: openstack_neutron_network_repo_info.args
+  with_items: openstack_neutron_network_repo_info.repos
+  when: openstack_neutron_network_repo_info.repos|length > 0
 
-- name: ensure neutron network is started and enabled
+- name: ensure openstack neutron network packages are installed
+  action: "{{ openstack_neutron_network_package_info.pkg_mgr }}"
+  args: openstack_neutron_network_package_info.args
+  with_items: openstack_neutron_network_package_info.pkgs
+  when: openstack_neutron_network_package_info.pkgs|length > 0
+
+- name: ensure neutron network required services are started and enabled
   service: 
     name: "{{ item }}"
     state: started 
     enabled: yes
-  with_items:
-    - neutron-plugin-openvswitch-agent
-    - neutron-l3-agent
-    - neutron-dhcp-agent
-    - neutron-metadata-agent
-    - openvswitch-switch
+  with_items: openstack_neutron_network_required_services
 
 - name: ensure that openvswitch integration bridge exists
   openvswitch_bridge:
@@ -56,3 +56,12 @@
 - name: ensure configure script is run at least once
   command: /etc/network/if-up.d/configure_br-ex
   when: update_network_configure_script|changed
+
+- name: ensure neutron network services are started and enabled
+  service: 
+    name: "{{ item }}"
+    state: started 
+    enabled: yes
+  with_items: openstack_neutron_network_services
+
+
