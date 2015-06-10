@@ -50,7 +50,20 @@ openstack_network_public_url: http://{{ openstack_network_endpoint_host }}:9696
 
 openstack_network_local_ip: "{{ ansible_default_ipv4.address }}"
 
-openstack_network_external_device: eth0
+# ugly ansible/jinja2 code to get first active device with ipv4 address that is
+# not loopback. If anyone knows a better way, email me.
+openstack_network_external_device: >
+  {%- set found = false -%}
+  {%- for interface in ansible_interfaces -%}
+      {%- set interface_obj =
+              hostvars['default']['ansible_%s'|format(interface)] -%}
+      {%- if not found and interface_obj.device != 'lo' and
+          interface_obj.active and interface_obj.ipv4 is defined -%}
+          {%- set found = true -%}
+          {{ interface_obj.device }}
+      {%- endif -%}
+  {%- endfor -%}
+
 openstack_network_external_name: public
 openstack_network_external_network: 10.1.0.0/16
 openstack_network_external_gateway: 10.1.0.1
