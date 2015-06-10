@@ -55,12 +55,15 @@ openstack_network_local_ip: "{{ ansible_default_ipv4.address }}"
 openstack_network_external_device: >
   {%- set found = false -%}
   {%- for name in ansible_interfaces -%}
-    {%- set iface = hostvars[inventory_hostname]['ansible_' ~ name] -%}
-    {%- if not found and iface.active and 
-           iface.device not in [ 'lo', 'br-int', 'br-tun', 'br-ex', 'docker0', 
-                                 'virbr0' ] -%}
-      {%- set found = true -%}
-      {{ iface.device }}
+    {%- if name not in [ 'lo', 'br-int', 'br-tun', 'br-ex', 'docker0', 
+                         'virbr0' ] -%}
+      {%- set iface = 
+              hostvars[inventory_hostname]['ansible_' ~ name|replace("-", "_")] 
+      -%}
+      {%- if not found and iface.active -%}
+        {%- set found = true -%}
+        {{ iface.device }}
+      {%- endif -%}
     {%- endif -%}
   {%- endfor -%}
 
