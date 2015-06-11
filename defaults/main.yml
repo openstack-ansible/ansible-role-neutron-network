@@ -52,11 +52,23 @@ openstack_network_local_ip: "{{ ansible_default_ipv4.address }}"
 
 # ugly ansible/jinja2 code to get first active device with ipv4 address that is
 # not loopback. If anyone knows a better way, email me.
+openstack_network_external_device_bad_prefixes:
+  - br
+  - docker
+  - lo
+  - veth
+  - virbr
+  
 openstack_network_external_device: >
-  {%- set found = false -%}
+  {%- set _found = false -%}
   {%- for name in ansible_interfaces -%}
-    {%- if name not in [ 'lo', 'br-int', 'br-tun', 'br-ex', 'docker0', 
-                         'virbr0' ] -%}
+    {%- set _bad_device = false -%}
+    {%- for prefix in openstack_network_external_device_bad_prefixes -%}
+      {%- if name|match('^' ~ prefix ~ '.*$') -%}
+        {%- set _bad_device = true -%}
+      {%- endif -%}
+    {%- endfor -%}
+    {%- if not _bad_device -%}
       {%- set iface = 
               hostvars[inventory_hostname]['ansible_' ~ name|replace("-", "_")] 
       -%}
