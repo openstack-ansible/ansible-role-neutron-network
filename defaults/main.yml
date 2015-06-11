@@ -64,7 +64,7 @@ openstack_network_external_device: >
   {%- for name in ansible_interfaces -%}
     {%- set _bad_device = false -%}
     {%- for prefix in openstack_network_external_device_bad_prefixes -%}
-      {%- if name|match('^' ~ prefix ~ '.*$') -%}
+      {%- if name|match('^' ~ prefix) -%}
         {%- set _bad_device = true -%}
       {%- endif -%}
     {%- endfor -%}
