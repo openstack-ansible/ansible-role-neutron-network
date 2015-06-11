@@ -72,8 +72,8 @@ openstack_network_external_device: >
       {%- set iface = 
               hostvars[inventory_hostname]['ansible_' ~ name|replace("-", "_")] 
       -%}
-      {%- if not found and iface.active -%}
-        {%- set found = true -%}
+      {%- if not _found and iface.active -%}
+        {%- set _found = true -%}
         {{ iface.device }}
       {%- endif -%}
     {%- endif -%}
