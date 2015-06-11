@@ -60,20 +60,12 @@ openstack_network_external_device_bad_prefixes:
   - virbr
   
 openstack_network_external_device: >
-  {%- set _found = false -%}
-  {%- for name in ansible_interfaces -%}
-    {%- set _bad_device = false -%}
-    {%- for prefix in openstack_network_external_device_bad_prefixes -%}
-      {%- if name|match('^' ~ prefix) -%}
-        {%- set _bad_device = true -%}
-      {%- endif -%}
-    {%- endfor -%}
-    {%- if not _bad_device -%}
-      {%- set iface = 
-              hostvars[inventory_hostname]['ansible_' ~ name|replace("-", "_")] 
-      -%}
-      {%- if not _found and iface.active -%}
-        {%- set _found = true -%}
+  {%- set found = false -%}
+  {%- for iface_name in ansible_interfaces -%}
+    {%- if not iface_name|match('^(' ~ openstack_network_external_device_bad_prefixes|join('|') ~ ')') -%}
+      {%- set iface = hostvars[inventory_hostname]['ansible_' ~ iface_name|replace("-", "_")] -%}
+      {%- if not found and iface.active -%}
+        {%- set found = true -%}
         {{ iface.device }}
       {%- endif -%}
     {%- endif -%}
