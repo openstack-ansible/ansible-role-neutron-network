@@ -9,6 +9,7 @@
   sysctl:
     name: "{{ item.name }}"
     value: "{{ item.value }}"
+    ignoreerrors: yes
     state: present
   with_items:
     - { name: net.ipv4.ip_forward, value: 1 }
@@ -33,6 +34,7 @@
     state: started 
     enabled: yes
   with_items: openstack_neutron_network_required_services
+  when: openstack_neutron_network_required_services|length > 0
 
 - name: ensure that openvswitch integration bridge exists
   openvswitch_bridge:
