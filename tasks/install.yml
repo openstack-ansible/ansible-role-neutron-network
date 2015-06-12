@@ -63,5 +63,3 @@
     state: started 
     enabled: yes
   with_items: openstack_neutron_network_services
-
-
