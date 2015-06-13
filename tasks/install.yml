@@ -27,7 +27,6 @@
   args: openstack_neutron_network_package_info.args
   with_items: openstack_neutron_network_package_info.pkgs
   when: openstack_neutron_network_package_info.pkgs|length > 0
-  register: openstack_neutron_network_package_install
 
 - name: ensure neutron network required services are started and enabled
   service: 
