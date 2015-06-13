@@ -153,11 +153,10 @@
 
 - name: restart neutron services if necessary
   shell: >
-    ls /etc/init/neutron-* | grep -v ovs | while read conf; do
-      service $(basename ${conf} .conf) restart;
-    done
-  when: modify_neutron_ini|changed or 
-        modify_ml2_ini|changed or
+    ls /etc/init*/neutron-* | grep -v ovs | while read file; do
+      service $(basename $file .conf) restart;
+    done || true
+  when: modify_neutron_ini|changed or modify_ml2_ini|changed or
         modify_l3_agent_ini|changed or 
         modify_dhcp_agent_ini|changed or 
         modify_metadata_agent_ini|changed

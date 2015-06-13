@@ -27,6 +27,13 @@
   args: openstack_neutron_network_package_info.args
   with_items: openstack_neutron_network_package_info.pkgs
   when: openstack_neutron_network_package_info.pkgs|length > 0
+  register: openstack_neutron_network_package_install
+
+- name: run post-install commands if necessary
+  command: "{{ item }}"
+  with_items: openstack_neutron_network_package_info.post_commands
+  when: openstack_neutron_network_package_info.post_commands|length > 0 and
+        openstack_neutron_network_package_install|changed
 
 - name: ensure neutron network required services are started and enabled
   service: 
