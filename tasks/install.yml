@@ -62,7 +62,7 @@
 - name: ensure neutron network services are started and enabled
   service: 
     name: "{{ item }}"
-    state: started 
+    state: started
     enabled: yes
   with_items: openstack_neutron_network_services
   when: openstack_neutron_network_services|length > 0
