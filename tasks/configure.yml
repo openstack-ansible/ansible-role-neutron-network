@@ -55,7 +55,8 @@
     - { section: ml2, option: type_drivers, value: 'vlan,local' }
     - { section: ml2, option: tenant_network_types, value: vlan }
     - { section: ml2, option: mechanism_drivers, value: openvswitch }
-    - { section: ml2_type_vlan, option: tunnel_id_ranges, value: "1:1000" }
+    - { section: ml2_type_vlan, 
+        option: network_vlan_ranges, value: "physnet1:1000:1999" }
     - { section: ovs, option: local_ip,
         value: "{{ openstack_network_local_ip }}" }
     - { section: ovs, option: tunnel_type, value: vlan }

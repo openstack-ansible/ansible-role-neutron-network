@@ -12,9 +12,9 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     v.customize ["modifyvm", :id, "--nicpromisc2", "allow-vms"]
   end
 
-  config.vm.provision "ansible" do |ansible|
-    ansible.playbook = "getreqs.yml"
-  end
+  #config.vm.provision "ansible" do |ansible|
+  #  ansible.playbook = "getreqs.yml"
+  #end
 
   config.vm.provision "ansible" do |ansible|
     ansible.playbook = "prepare-vm.yml"
