@@ -16,6 +16,7 @@
     login_password: "{{ openstack_identity_admin_password }}"
     name: "{{ openstack_network_external_name }}"
     provider_network_type: vlan
+    provider_physical_network: provider
     provider_segmentation_id: 1
     router_external: true
     shared: true
