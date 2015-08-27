@@ -56,6 +56,7 @@ openstack_network_external_device_bad_prefixes:
   - br
   - docker
   - lo
+  - tap
   - veth
   - virbr
   
